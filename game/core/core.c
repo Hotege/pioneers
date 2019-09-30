@@ -11,6 +11,14 @@ void initialize_glfw()
 void create_window(const char* title, int width, int height)
 {
     window = glfwCreateWindow(width, height, title, NULL, NULL);
+    RECT rtWindow;
+    GetWindowRect(glfwGetWin32Window(window), &rtWindow);
+    SetWindowPos(
+        glfwGetWin32Window(window), HWND_TOP,
+        (GetSystemMetrics(SM_CXSCREEN) - (rtWindow.right - rtWindow.left)) / 2,
+        (GetSystemMetrics(SM_CYSCREEN) - (rtWindow.bottom - rtWindow.top)) / 2,
+        0, 0, SWP_NOSIZE | SWP_NOZORDER
+    );
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 }
