@@ -18,18 +18,18 @@ int main(int argc, char const *argv[])
     load_image_memory(&img, data, fs);
     printf("%d\t%d\n", img.width, img.height);
     printf(
-        "%d\t%d\t%d\t%d\n",
-        ((unsigned char*)(img.data))[(8 * img.height + 0) * 4 + 0],
-        ((unsigned char*)(img.data))[(8 * img.height + 0) * 4 + 1],
-        ((unsigned char*)(img.data))[(8 * img.height + 0) * 4 + 2],
-        ((unsigned char*)(img.data))[(8 * img.height + 0) * 4 + 3]
+        "%d\t%d\t%d\n",
+        ((unsigned char*)(img.data))[(8 * img.height + 0) * img.nums + 0],
+        ((unsigned char*)(img.data))[(8 * img.height + 0) * img.nums + 1],
+        ((unsigned char*)(img.data))[(8 * img.height + 0) * img.nums + 2]//,
+        //((unsigned char*)(img.data))[(8 * img.height + 0) * img.nums + 3]
     );
     printf(
-        "%d\t%d\t%d\t%d\n",
-        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * 4 + 0],
-        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * 4 + 1],
-        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * 4 + 2],
-        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * 4 + 3]
+        "%d\t%d\t%d\n",
+        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * img.nums + 0],
+        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * img.nums + 1],
+        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * img.nums + 2]//,
+        //((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * img.nums + 3]
     );
     free(img.data);
     img.data = NULL;

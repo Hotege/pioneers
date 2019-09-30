@@ -34,18 +34,30 @@ void load_png(struct image_unit* img, const void* buffer, const int len)
     png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_EXPAND, 0);
     img->width = png_get_image_width(png_ptr, info_ptr);
     img->height = png_get_image_height(png_ptr, info_ptr);
-    img->depth = png_get_bit_depth(png_ptr, info_ptr);
     const png_byte color_type = png_get_color_type(png_ptr, info_ptr);
     switch (color_type)
     {
-    case PNG_COLOR_TYPE_RGB_ALPHA:
+    case PNG_COLOR_TYPE_RGB:
     {
-        img->data = malloc(img->width * img->height * 4);
+        img->nums = 3;
+        img->data = malloc(img->width * img->height * img->nums);
         png_bytep* row_pointers = png_get_rows(png_ptr, info_ptr);
         for(unsigned int i = 0; i < img->height; ++i)
         {
             const unsigned int row = img->height - i - 1;
-            memcpy(img->data + (row * img->width * 4), row_pointers[i], img->width * 4);
+            memcpy(img->data + (row * img->width * img->nums), row_pointers[i], img->width * img->nums);
+        }
+    }
+        break;
+    case PNG_COLOR_TYPE_RGB_ALPHA:
+    {
+        img->nums = 4;
+        img->data = malloc(img->width * img->height * img->nums);
+        png_bytep* row_pointers = png_get_rows(png_ptr, info_ptr);
+        for(unsigned int i = 0; i < img->height; ++i)
+        {
+            const unsigned int row = img->height - i - 1;
+            memcpy(img->data + (row * img->width * img->nums), row_pointers[i], img->width * img->nums);
         }
     }
         break;

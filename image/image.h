@@ -11,7 +11,7 @@ struct image_unit
 {
     void* data; // BGRA
     int width, height;
-    int depth;
+    int nums; // amount of colors
     enum IMAGE_TYPE type;
 };
 
