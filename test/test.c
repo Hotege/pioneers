@@ -1,55 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-
-const char lua_path[] = "scripts/info.lua";
-
-lua_State* L;
+#include "../image/image.h"
 
 int main(int argc, char const *argv[])
 {
-    L = luaL_newstate();
-    luaopen_base(L);
-    luaopen_table(L);
-    luaopen_package(L);
-    luaopen_io(L);
-    luaopen_os(L);
-    luaopen_string(L);
-    luaL_openlibs(L);
-
-    //luaL_dofile(L, "scripts/info.lua");
-    if (argc >= 2)
-    {
-        printf("working path: %s\n", argv[1]);
-        int len = strlen(argv[1]) + strlen(lua_path) + 2;
-        char* path = (char*)malloc(sizeof(char) * len);
-        memset(path, 0, sizeof(char) * len);
-        strcpy(path, argv[1]);
-        strcat(path, "/");
-        strcat(path, lua_path);
-        FILE* f = fopen(path, "rb");
-        fseek(f, 0, SEEK_END);
-        long fs = ftell(f);
-        fseek(f, 0, SEEK_SET);
-        char* data = (char*)malloc(sizeof(char) * fs);
-        fread(data, fs, sizeof(char), f);
-        fclose(f);
-        luaL_dostring(L, data);
-
-        lua_getglobal(L, "info");
-        lua_pushstring(L, "showInfo");
-        lua_gettable(L, -2);
-        lua_pcall(L, 0, 0, 0);
-
-        free(data);
-        data = NULL;
-        free(path);
-        path = NULL;
-    }
-
-    lua_close(L);
+    FILE* file = fopen("test.png", "rb");
+    fseek(file, 0, SEEK_END);
+    long fs = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    unsigned char* data = (unsigned char*)malloc(sizeof(unsigned char) * fs);
+    fread(data, fs, sizeof(unsigned char), file);
+    fclose(file);
+    printf("file size: %d\n", fs);
+    struct image_unit img = { 0 };
+    img.type = IMAGE_PNG;
+    load_image_memory(&img, data, fs);
+    printf("%d\t%d\n", img.width, img.height);
+    printf(
+        "%d\t%d\t%d\t%d\n",
+        ((unsigned char*)(img.data))[(8 * img.height + 0) * 4 + 0],
+        ((unsigned char*)(img.data))[(8 * img.height + 0) * 4 + 1],
+        ((unsigned char*)(img.data))[(8 * img.height + 0) * 4 + 2],
+        ((unsigned char*)(img.data))[(8 * img.height + 0) * 4 + 3]
+    );
+    printf(
+        "%d\t%d\t%d\t%d\n",
+        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * 4 + 0],
+        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * 4 + 1],
+        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * 4 + 2],
+        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * 4 + 3]
+    );
+    free(img.data);
+    img.data = NULL;
+    free(data);
+    data = NULL;
     return 0;
 }

@@ -12,7 +12,7 @@ link_directories(
 )
 
 link_libraries(
-    lualib
+    image
 )
 
 add_executable(test ${srcs})
@@ -24,5 +24,10 @@ if(UPX_PROGRAM)
     )
 endif()
 
-install(DIRECTORY ../scripts DESTINATION test/bin)
+file(
+    GLOB imgs
+    ../resources/*.png
+)
+
+install(FILES ${imgs} DESTINATION test/bin)
 install(TARGETS test DESTINATION test/bin)
