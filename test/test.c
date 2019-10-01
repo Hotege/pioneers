@@ -1,39 +1,27 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "../image/image.h"
+#include "../crypt/crypt.h"
+
+const int size = 12;
+
+const char k1[] = "This is key1.\0";
+const int k1len = 13;
+const char k2[] = "Key2 is here.\0";
+const int k2len = 13;
 
 int main(int argc, char const *argv[])
 {
-    FILE* file = fopen("test.png", "rb");
-    fseek(file, 0, SEEK_END);
-    long fs = ftell(file);
-    fseek(file, 0, SEEK_SET);
-    unsigned char* data = (unsigned char*)malloc(sizeof(unsigned char) * fs);
-    fread(data, fs, sizeof(unsigned char), file);
-    fclose(file);
-    printf("file size: %d\n", fs);
-    struct image_unit img = { 0 };
-    img.type = IMAGE_PNG;
-    load_image_memory(&img, data, fs);
-    printf("%d\t%d\n", img.width, img.height);
-    printf(
-        "%d\t%d\t%d\n",
-        ((unsigned char*)(img.data))[(8 * img.height + 0) * img.nums + 0],
-        ((unsigned char*)(img.data))[(8 * img.height + 0) * img.nums + 1],
-        ((unsigned char*)(img.data))[(8 * img.height + 0) * img.nums + 2]//,
-        //((unsigned char*)(img.data))[(8 * img.height + 0) * img.nums + 3]
-    );
-    printf(
-        "%d\t%d\t%d\n",
-        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * img.nums + 0],
-        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * img.nums + 1],
-        ((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * img.nums + 2]//,
-        //((unsigned char*)(img.data))[((img.width - 1) * img.height + (img.height - 1)) * img.nums + 3]
-    );
-    free(img.data);
-    img.data = NULL;
-    free(data);
-    data = NULL;
+    printf("crypt test\n");
+    const char source[] = "Hello World!\0";
+    printf("source: %s\n", source);
+    unsigned char result[size];
+    encrypt_memory(result, (unsigned char*)source, size, (unsigned char*)k1, k1len, (unsigned char*)k2, k2len);
+    printf("result: ");
+    for (int i = 0; i < size; i++)
+        printf("%d ", result[i]);
+    printf("\n");
+    char conf[size + 1];
+    conf[size] = 0;
+    decrypt_memory((unsigned char*)conf, result, size, (unsigned char*)k1, k1len, (unsigned char*)k2, k2len);
+    printf("conf: %s\n", conf);
     return 0;
 }
