@@ -59,7 +59,6 @@ int main(int argc, char const *argv[])
             lua_gettable(L, -2);
             const char* name = lua_tostring(L, -1);
             filecat(full, len, argv[1], name);
-            printf("full path: %s\n", full);
 
             FILE* f = fopen(full, "rb");
             if (!f)
@@ -73,6 +72,7 @@ int main(int argc, char const *argv[])
             char* d = (char*)malloc(sizeof(char) * fs);
             fread(d, fs, sizeof(char), f);
             fclose(f);
+            printf("full path: %s, size: %d\n", full, fs);
             struct script_node* n = (struct script_node*)malloc(sizeof(struct script_node));
             n->title = name;
             n->title_size = strlen(name);
@@ -89,10 +89,11 @@ int main(int argc, char const *argv[])
         unsigned char* dest = (unsigned char*)malloc(sizeof(unsigned char) * bound);
         compress_scripts(dest, &bound, list);
         printf("result size: %lu\n", bound);
-        printf("compress rate: %f\n", (float)(bound) / (float)(code_size));
+        printf("compress rate: %lf\n", (double)(bound) / (double)(code_size));
         FILE* output = fopen(argv[2], "wb");
         fwrite(dest, bound, sizeof(unsigned char), output);
         fclose(output);
+        printf("file %s saved.\n", argv[2]);
         free(dest);
         dest = NULL;
         free(full);
