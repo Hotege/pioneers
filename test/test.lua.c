@@ -4,6 +4,7 @@
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
+#include "../file/file.h"
 
 const char lua_path[] = "scripts/info.lua";
 
@@ -30,22 +31,16 @@ int main(int argc, char const *argv[])
         strcpy(path, argv[1]);
         strcat(path, "/");
         strcat(path, lua_path);
-        FILE* f = fopen(path, "rb");
-        fseek(f, 0, SEEK_END);
-        long fs = ftell(f);
-        fseek(f, 0, SEEK_SET);
-        char* data = (char*)malloc(sizeof(char) * fs);
-        fread(data, fs, sizeof(char), f);
-        fclose(f);
-        luaL_dostring(L, data);
+        struct file_loader file;
+        load_file(&file, path);
+        luaL_dostring(L, file.data);
 
         lua_getglobal(L, "info");
         lua_pushstring(L, "showInfo");
         lua_gettable(L, -2);
         lua_pcall(L, 0, 0, 0);
 
-        free(data);
-        data = NULL;
+        close_file(&file);
         free(path);
         path = NULL;
     }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../file/file.h"
 #include "core/core.h"
 #include "lua/base.h"
 #include "lua/global.h"
@@ -8,19 +9,14 @@
 int main(int argc, char const *argv[])
 {
     // load file
-    FILE* file = fopen("scripts.lzp", "rb");
-    fseek(file, 0, SEEK_END);
-    long fs = ftell(file);
-    fseek(file, 0, SEEK_SET);
-    unsigned char* data = (unsigned char*)malloc(sizeof(unsigned char) * fs);
-    fread(data, fs, sizeof(unsigned char), file);
-    fclose(file);
+    struct file_loader file;
+    load_file(&file, "scripts.lzp");
     // load scripts
-    int scripts_size = load_scripts_size(data);
+    int scripts_size = load_scripts_size(file.data);
     struct script_node** nodes = (struct script_node**)malloc(sizeof(struct script_node*) * scripts_size);
     for (int i = 0; i < scripts_size; i++)
         nodes[i] = NULL;
-    uncompress_scripts(nodes, data, fs);
+    uncompress_scripts(nodes, file.data, file.size);
     // initialize
     initialize_glfw();
     initialize_lua(nodes, scripts_size);
@@ -39,7 +35,6 @@ int main(int argc, char const *argv[])
     }
     free(nodes);
     nodes = NULL;
-    free(data);
-    data = NULL;
+    close_file(&file);
     return 0;
 }

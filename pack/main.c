@@ -5,6 +5,7 @@
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
+#include "../file/file.h"
 #include "../gatherer/gatherer.h"
 
 #define EXPAND_SIZE 200
@@ -60,27 +61,17 @@ int main(int argc, char const *argv[])
             const char* name = lua_tostring(L, -1);
             filecat(full, len, argv[1], name);
 
-            FILE* f = fopen(full, "rb");
-            if (!f)
-            {
-                printf("error: cannot find file %s\n", name);
-                continue;
-            }
-            fseek(f, 0, SEEK_END);
-            long fs = ftell(f);
-            fseek(f, 0, SEEK_SET);
-            char* d = (char*)malloc(sizeof(char) * fs);
-            fread(d, fs, sizeof(char), f);
-            fclose(f);
-            printf("full path: %s, size: %d\n", full, fs);
+            struct file_loader file;
+            load_file(&file, full);
+            printf("full path: %s, size: %d\n", full, file.size);
             struct script_node* n = (struct script_node*)malloc(sizeof(struct script_node));
             n->title = name;
             n->title_size = strlen(name);
-            n->body = d;
-            n->body_size = fs;
+            n->body = file.data;
+            n->body_size = file.size;
             n->next = NULL;
             append_list(&list, n);
-            code_size += fs;
+            code_size += file.size;
         }
         printf("list size: %d\n", get_list_size(list));
         unsigned long bound = compress_scripts_bound(list);
@@ -90,9 +81,10 @@ int main(int argc, char const *argv[])
         compress_scripts(dest, &bound, list);
         printf("result size: %lu\n", bound);
         printf("compress rate: %lf\n", (double)(bound) / (double)(code_size));
-        FILE* output = fopen(argv[2], "wb");
-        fwrite(dest, bound, sizeof(unsigned char), output);
-        fclose(output);
+        struct file_loader output;
+        output.data = dest;
+        output.size = bound;
+        save_file(&output, argv[2]);
         printf("file %s saved.\n", argv[2]);
         free(dest);
         dest = NULL;

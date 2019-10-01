@@ -15,6 +15,7 @@ link_directories(
     ${GLFW_LINK_DIR}
 )
 
+add_subdirectory(file)
 add_subdirectory(crypt)
 add_subdirectory(image)
 add_subdirectory(gatherer)

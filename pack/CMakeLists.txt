@@ -12,6 +12,7 @@ link_directories(
 )
 
 link_libraries(
+    file
     gatherer
     lualib
 )

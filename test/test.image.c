@@ -1,21 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../file/file.h"
 #include "../image/image.h"
 
 int main(int argc, char const *argv[])
 {
-    FILE* file = fopen("test.png", "rb");
-    fseek(file, 0, SEEK_END);
-    long fs = ftell(file);
-    fseek(file, 0, SEEK_SET);
-    unsigned char* data = (unsigned char*)malloc(sizeof(unsigned char) * fs);
-    fread(data, fs, sizeof(unsigned char), file);
-    fclose(file);
-    printf("file size: %d\n", fs);
+    struct file_loader file;
+    load_file(&file, "test.png");
+    printf("file size: %d\n", file.size);
     struct image_unit img = { 0 };
     img.type = IMAGE_PNG;
-    load_image_memory(&img, data, fs);
+    load_image_memory(&img, file.data, file.size);
     printf("%d\t%d\n", img.width, img.height);
     printf(
         "%d\t%d\t%d\n",
@@ -33,7 +29,6 @@ int main(int argc, char const *argv[])
     );
     free(img.data);
     img.data = NULL;
-    free(data);
-    data = NULL;
+    close_file(&file);
     return 0;
 }
