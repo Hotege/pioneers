@@ -1,6 +1,9 @@
 function main()
+    -- create window
     createWindow()
+    scene_title.initialize()
     scene.object = scene_title
+    -- main loop
     while (not windowShouldClose()) do
         typeSceneObject = type(scene.object)
         if (type(scene.object) == "table") then
