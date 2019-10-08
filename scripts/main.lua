@@ -5,18 +5,9 @@ function main()
     scene.object = scene_title
     -- main loop
     while (not windowShouldClose()) do
-        typeSceneObject = type(scene.object)
-        if (type(scene.object) == "table") then
-            typeRender = type(scene.object.render)
-            if (typeRender == "function") then
-                scene.object.render()
-            else
-                message("Error: render function type error, current is " .. typeRender .. ".")
-                destroyWindow()
-                break
-            end
+        if (scene.verify()) then
+            scene.object.render()
         else
-            message("Error: scene type error, current is " .. typeSceneObject ..".")
             destroyWindow()
             break
         end
