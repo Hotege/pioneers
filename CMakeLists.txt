@@ -17,6 +17,7 @@ link_directories(
 
 add_subdirectory(file)
 add_subdirectory(crypt)
+add_subdirectory(resources)
 add_subdirectory(image)
 add_subdirectory(gatherer)
 add_subdirectory(pack)
