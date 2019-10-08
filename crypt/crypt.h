@@ -3,7 +3,7 @@
 
 void encrypt_memory(
     unsigned char* dest, const unsigned char* src, const int len,
-    const unsigned char* k1, int klen1, const unsigned char* k2, int klen2
+    const unsigned char* k1, const int klen1, const unsigned char* k2, const int klen2
 );
 void decrypt_memory(
     unsigned char* dest, const unsigned char* src, const int len,
