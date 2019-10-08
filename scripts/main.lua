@@ -1,6 +1,7 @@
 function main()
     -- create window
-    createWindow()
+    icon = loadImage(data.icon, data.encrypted)
+    createWindow(icon)
     scene_title.initialize()
     scene.object = scene_title
     -- main loop
