@@ -10,5 +10,6 @@ LUALIB_API int createWindow(lua_State* l);
 LUALIB_API int windowShouldClose(lua_State* l);
 LUALIB_API int windowEventsHandler(lua_State* l);
 LUALIB_API int destroyWindow(lua_State* l);
+LUALIB_API int loadImage(lua_State* l);
 
 #endif

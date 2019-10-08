@@ -22,6 +22,8 @@ void load_globals(lua_State* l)
     lua_setglobal(l, "windowEventsHandler");
     lua_pushcfunction(l, destroyWindow);
     lua_setglobal(l, "destroyWindow");
+    lua_pushcfunction(l, loadImage);
+    lua_setglobal(l, "loadImage");
 }
 
 GetLuaMember(const char*, string, fields, name)
