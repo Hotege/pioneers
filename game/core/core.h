@@ -6,7 +6,10 @@
 #include <GLFW/glfw3native.h>
 
 void initialize_glfw();
-void create_window(const char* title, int width, int height);
+void create_window(
+    const char* title, int width, int height,
+    const void* icon_data, const int icon_width, const int icon_height, const int icon_nums
+);
 void terminate_glfw();
 
 GLFWwindow* get_window();

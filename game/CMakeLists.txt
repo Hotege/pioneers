@@ -21,6 +21,8 @@ link_directories(
 
 link_libraries(
     file
+    crypt
+    image
     gatherer
     lualib
     glfw3
