@@ -13,5 +13,5 @@ function global.getInfo()
 end
 
 function global.showInfo()
-    print(global.getInfo())
+    message(global.getInfo())
 end
