@@ -1,5 +1,7 @@
 data = {}
 
+data.encrypted = true
+
 data.icon = "graphic/icon.png"
 
 data.title = {}
