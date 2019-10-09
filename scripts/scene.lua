@@ -6,7 +6,7 @@ scene.object = nil
 
 function scene.verify()
     typeSceneObject = type(scene.object)
-    if (type(scene.object) == "table") then
+    if (typeSceneObject == "table") then
         typeRender = type(scene.object.render)
         if (typeRender == "function") then
             return true
