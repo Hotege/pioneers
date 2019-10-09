@@ -4,6 +4,7 @@
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
+#include "../core/core.h"
 #include <GLFW/glfw3.h>
 
 void load_globals(lua_State* l);
