@@ -13,6 +13,7 @@ LUALIB_API int message(lua_State* l)
 {
     const char* msg = luaL_checkstring(l, -1);
     MessageBox(get_hwnd(), msg, __get_lua_string(l, "scene", "title"), 0);
+    return 0;
 }
 
 LUALIB_API int createWindow(lua_State* l)
@@ -48,6 +49,7 @@ LUALIB_API int createWindow(lua_State* l)
     );
     free(data);
     data = NULL;
+    return 0;
 }
 
 LUALIB_API int windowShouldClose(lua_State* l)
@@ -125,6 +127,48 @@ LUALIB_API int loadImage(lua_State* l)
     return 1;
 }
 
+LUALIB_API int generateTexture(lua_State* l)
+{
+    lua_pushstring(l, "width");
+    lua_gettable(l, -2);
+    int width = lua_tointeger(l, -1);
+    lua_pop(l, 1);
+    lua_pushstring(l, "height");
+    lua_gettable(l, -2);
+    int height = lua_tointeger(l, -1);
+    lua_pop(l, 1);
+    lua_pushstring(l, "nums");
+    lua_gettable(l, -2);
+    int nums = lua_tointeger(l, -1);
+    lua_pop(l, 1);
+    lua_pushstring(l, "data");
+    lua_gettable(l, -2);
+    unsigned char* data = (unsigned char*)malloc(width * height * nums);
+    for (int i = 0; i < width * height * nums; i += 4)
+    {
+        lua_pushinteger(l, i);
+        lua_gettable(l, -2);
+        *((int*)(data + i)) = lua_tointeger(l, -1);
+        lua_pop(l, 1);
+    }
+    lua_pop(l, 1);
+    GLuint texture = 0;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    if (nums == 4)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+    if (nums == 3)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    free(data);
+    data = NULL;
+    lua_pushinteger(l, texture);
+    return 1;
+}
+
 LUALIB_API int clearScene(lua_State* l)
 {
     const float r = lua_tonumber(l, -4);
@@ -135,4 +179,15 @@ LUALIB_API int clearScene(lua_State* l)
     glClear(GL_COLOR_BUFFER_BIT);
     glClearDepth(1.0);
     glClear(GL_DEPTH_BUFFER_BIT);
+    return 0;
+}
+
+LUALIB_API int drawImage(lua_State* l)
+{
+    const GLuint texture = lua_tointeger(l, -5);
+    const float x = lua_tointeger(l, -4);
+    const float y = lua_tointeger(l, -3);
+    const float cx = lua_tointeger(l, -2);
+    const float cy = lua_tointeger(l, -1);
+    return 0;
 }
