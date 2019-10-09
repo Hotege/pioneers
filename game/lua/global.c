@@ -1,7 +1,6 @@
 #include "global.h"
 #include <stdio.h>
 #include "functions.h"
-#include "../core/core.h"
 
 // global variables and functions in lua files
 //GLFWwindow* window = NULL;
@@ -24,6 +23,8 @@ void load_globals(lua_State* l)
     lua_setglobal(l, "destroyWindow");
     lua_pushcfunction(l, loadImage);
     lua_setglobal(l, "loadImage");
+    lua_pushcfunction(l, clearScene);
+    lua_setglobal(l, "clearScene");
 }
 
 GetLuaMember(const char*, string, fields, name)

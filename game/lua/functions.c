@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <GLFW/glfw3.h>
 #include "global.h"
 #include "../core/core.h"
 #include "../../file/file.h"
 #include "../../crypt/crypt.h"
 #include "../../image/image.h"
+#include <GLFW/glfw3.h>
 
 LUALIB_API int message(lua_State* l)
 {
@@ -123,4 +123,16 @@ LUALIB_API int loadImage(lua_State* l)
     free(path);
     path = NULL;
     return 1;
+}
+
+LUALIB_API int clearScene(lua_State* l)
+{
+    const float r = lua_tonumber(l, -4);
+    const float g = lua_tonumber(l, -3);
+    const float b = lua_tonumber(l, -2);
+    const float a = lua_tonumber(l, -1);
+    glClearColor(r, g, b, a);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClearDepth(1.0);
+    glClear(GL_DEPTH_BUFFER_BIT);
 }
