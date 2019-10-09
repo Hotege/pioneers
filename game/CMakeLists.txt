@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s -fvisibility=hidden -ffunction-sections -fdata-sections -Wl,--gc-sections -static-libgcc")
 
-add_definitions("-DGLFW_EXPOSE_NATIVE_WIN32")
+add_definitions("-DGLFW_EXPOSE_NATIVE_WIN32 -DGLEW_STATIC")
 
 file(
     GLOB srcs
@@ -26,6 +26,8 @@ link_libraries(
     gatherer
     lualib
     glfw3
+    glew32
+    opengl32
 )
 
 add_executable(game ${srcs})

@@ -44,6 +44,10 @@ void create_window(
         }
     GLFWimage img = { (int)icon_width, (int)icon_height, icon };
     glfwSetWindowIcon(window, 1, &img);
+
+    glewInit();
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_CULL_FACE);
 }
 
 void terminate_glfw()

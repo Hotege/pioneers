@@ -6,6 +6,7 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${LUA_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIR}
+    ${GLEW_INCLUDE_DIR}
 )
 
 link_directories(
@@ -13,6 +14,7 @@ link_directories(
     ${ZLIB_LINK_DIR}
     ${LUA_LINK_DIR}
     ${GLFW_LINK_DIR}
+    ${GLEW_LINK_DIR}
 )
 
 add_subdirectory(file)
