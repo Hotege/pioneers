@@ -190,7 +190,6 @@ LUALIB_API int drawImage(lua_State* l)
     const float y = lua_tointeger(l, -3);
     const float cx = lua_tointeger(l, -2);
     const float cy = lua_tointeger(l, -1);
-
     glBindTexture(GL_TEXTURE_2D, texture);
     glBegin(GL_TRIANGLES);
     glTexCoord2f(0.0, 0.0);

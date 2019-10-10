@@ -15,7 +15,7 @@ function scene.verify()
             return false
         end
     else
-        message("Error: scene type error, current is " .. typeSceneObject ..".")
+        message("Error: scene type error, current is " .. typeSceneObject .. ".")
         return false
     end
 end
