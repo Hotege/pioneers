@@ -10,7 +10,7 @@ end
 
 function scene_title.render()
     clearScene(0.0, 0.5, 0.5, 1.0)
-    drawImage(scene_title.texture.background, 0.0, 0.0, 1.0, 1.0)
+    drawImage(scene_title.texture.background, -1.0, -1.0, 1.0, 1.0)
 end
 
 function scene_title.terminate()
