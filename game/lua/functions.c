@@ -194,17 +194,17 @@ LUALIB_API int drawImage(lua_State* l)
     glBindTexture(GL_TEXTURE_2D, texture);
     glBegin(GL_TRIANGLES);
     glTexCoord2f(0.0, 0.0);
-    glVertex2f(-1.0, -1.0);
+    glVertex2f(x, y);
     glTexCoord2f(1.0, 0.0);
-    glVertex2f(1.0, -1.0);
+    glVertex2f(cx, y);
     glTexCoord2f(0.0, 1.0);
-    glVertex2f(-1.0, 1.0);
+    glVertex2f(x, cy);
     glTexCoord2f(1.0, 1.0);
-    glVertex2f(1.0, 1.0);
+    glVertex2f(cx, cy);
     glTexCoord2f(0.0, 1.0);
-    glVertex2f(-1.0, 1.0);
+    glVertex2f(x, cy);
     glTexCoord2f(1.0, 0.0);
-    glVertex2f(1.0, -1.0);
+    glVertex2f(cx, y);
     glEnd();
     return 0;
 }
