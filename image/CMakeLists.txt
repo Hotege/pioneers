@@ -19,3 +19,6 @@ link_libraries(
 )
 
 add_library(image ${srcs})
+
+install(TARGETS image DESTINATION image/lib)
+install(FILES image.h DESTINATION image/include)

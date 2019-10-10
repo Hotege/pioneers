@@ -17,3 +17,6 @@ link_libraries(
 )
 
 add_library(file ${srcs})
+
+install(TARGETS file DESTINATION file/lib)
+install(FILES file.h DESTINATION file/include)
