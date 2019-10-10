@@ -156,13 +156,14 @@ LUALIB_API int generateTexture(lua_State* l)
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
     if (nums == 4)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     if (nums == 3)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
     free(data);
     data = NULL;
     lua_pushinteger(l, texture);
@@ -189,5 +190,21 @@ LUALIB_API int drawImage(lua_State* l)
     const float y = lua_tointeger(l, -3);
     const float cx = lua_tointeger(l, -2);
     const float cy = lua_tointeger(l, -1);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.0, 0.0);
+    glVertex2f(-1.0, -1.0);
+    glTexCoord2f(1.0, 0.0);
+    glVertex2f(1.0, -1.0);
+    glTexCoord2f(0.0, 1.0);
+    glVertex2f(-1.0, 1.0);
+    glTexCoord2f(1.0, 1.0);
+    glVertex2f(1.0, 1.0);
+    glTexCoord2f(0.0, 1.0);
+    glVertex2f(-1.0, 1.0);
+    glTexCoord2f(1.0, 0.0);
+    glVertex2f(1.0, -1.0);
+    glEnd();
     return 0;
 }
