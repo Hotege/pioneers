@@ -1,6 +1,7 @@
 #include "file.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int load_file(struct file_loader* fl, const char* path)
 {
@@ -10,7 +11,8 @@ int load_file(struct file_loader* fl, const char* path)
     fseek(file, 0, SEEK_END);
     fl->size = ftell(file);
     fseek(file, 0, SEEK_SET);
-    fl->data = (unsigned char*)malloc(sizeof(unsigned char) * fl->size);
+    fl->data = (unsigned char*)malloc(sizeof(unsigned char) * (fl->size + 1));
+    memset(fl->data, 0, fl->size + 1);
     fread(fl->data, fl->size, sizeof(unsigned char), file);
     fclose(file);
     return 1;
