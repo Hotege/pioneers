@@ -1,18 +1,20 @@
 scene_title = {}
-scene_title.texture = {}
-scene_title.background = nil
 
-function scene_title.initialize()
-    scene_title.background = loadImage(data.title.image, data.encrypted)
-    scene_title.texture.background = scene_title.background:generateTexture()
-    return scene_title
+function scene_title:new(nilObject)
+    self = {}
+    self.render = scene_title.render
+    self.release = scene_title.release
+    self.background = loadImage(data.title.image, data.encrypted)
+    self.texture = {}
+    self.texture.background = self.background:generateTexture()
+    return self
 end
 
-function scene_title.render()
+function scene_title:render()
     clearScene(0.0, 0.5, 0.5, 1.0)
-    scene_title.texture.background:draw(-1.0, -1.0, 1.0, 1.0)
+    self.texture.background:draw(-1.0, -1.0, 1.0, 1.0)
 end
 
-function scene_title.terminate()
-    print("scene title terminate")
+function scene_title:release()
+    print("scene title release")
 end
