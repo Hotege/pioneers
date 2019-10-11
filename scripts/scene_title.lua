@@ -4,13 +4,13 @@ scene_title.background = nil
 
 function scene_title.initialize()
     scene_title.background = loadImage(data.title.image, data.encrypted)
-    scene_title.texture.background = generateTexture(scene_title.background)
+    scene_title.texture.background = scene_title.background:generateTexture()
     return scene_title
 end
 
 function scene_title.render()
     clearScene(0.0, 0.5, 0.5, 1.0)
-    drawImage(scene_title.texture.background, -1.0, -1.0, 1.0, 1.0)
+    scene_title.texture.background:draw(-1.0, -1.0, 1.0, 1.0)
 end
 
 function scene_title.terminate()

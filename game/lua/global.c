@@ -22,12 +22,8 @@ void load_globals(lua_State* l)
     lua_setglobal(l, "destroyWindow");
     lua_pushcfunction(l, loadImage);
     lua_setglobal(l, "loadImage");
-    lua_pushcfunction(l, generateTexture);
-    lua_setglobal(l, "generateTexture");
     lua_pushcfunction(l, clearScene);
     lua_setglobal(l, "clearScene");
-    lua_pushcfunction(l, drawImage);
-    lua_setglobal(l, "drawImage");
 }
 
 GetLuaMember(const char*, string, fields, name)

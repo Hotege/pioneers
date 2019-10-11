@@ -119,6 +119,9 @@ LUALIB_API int loadImage(lua_State* l)
         lua_settable(l, -3);
     }
     lua_settable(l, -3);
+    lua_pushstring(l, "generateTexture");
+    lua_pushcfunction(l, generateTexture);
+    lua_settable(l, -3);
     free(img.data);
     img.data = NULL;
     close_file(&file);
@@ -166,7 +169,13 @@ LUALIB_API int generateTexture(lua_State* l)
     glBindTexture(GL_TEXTURE_2D, 0);
     free(data);
     data = NULL;
+    lua_newtable(l);
+    lua_pushstring(l, "id");
     lua_pushinteger(l, texture);
+    lua_settable(l, -3);
+    lua_pushstring(l, "draw");
+    lua_pushcfunction(l, texture_draw);
+    lua_settable(l, -3);
     return 1;
 }
 
@@ -183,13 +192,17 @@ LUALIB_API int clearScene(lua_State* l)
     return 0;
 }
 
-LUALIB_API int drawImage(lua_State* l)
+LUALIB_API int texture_draw(lua_State* l)
 {
-    const GLuint texture = lua_tointeger(l, -5);
     const float x = lua_tointeger(l, -4);
     const float y = lua_tointeger(l, -3);
     const float cx = lua_tointeger(l, -2);
     const float cy = lua_tointeger(l, -1);
+    lua_pop(l, 4);
+    lua_pushstring(l, "id");
+    lua_gettable(l, -2);
+    GLuint texture = lua_tointeger(l, -1);
+    lua_pop(l, 1);
     glBindTexture(GL_TEXTURE_2D, texture);
     glBegin(GL_TRIANGLES);
     glTexCoord2f(0.0, 0.0);

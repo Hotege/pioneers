@@ -13,6 +13,6 @@ LUALIB_API int destroyWindow(lua_State* l);
 LUALIB_API int loadImage(lua_State* l);
 LUALIB_API int generateTexture(lua_State* l);
 LUALIB_API int clearScene(lua_State* l);
-LUALIB_API int drawImage(lua_State* l);
+LUALIB_API int texture_draw(lua_State* l);
 
 #endif
