@@ -13,4 +13,5 @@ function main()
         end
         windowEventsHandler()
     end
+    scene.object.terminate()
 end

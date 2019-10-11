@@ -14,5 +14,5 @@ function scene_title.render()
 end
 
 function scene_title.terminate()
-
+    print("scene title terminate")
 end
