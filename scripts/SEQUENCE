@@ -2,6 +2,7 @@ sequence = {}
 size = 0
 sequence[size] = "global.lua"; size = size + 1
 sequence[size] = "data.lua"; size = size + 1
+sequence[size] = "button.lua"; size = size + 1
 sequence[size] = "scene_title.lua"; size = size + 1
 sequence[size] = "scene.lua"; size = size + 1
 sequence[size] = "main.lua"; size = size + 1
