@@ -11,7 +11,7 @@ LUALIB_API int windowShouldClose(lua_State* l);
 LUALIB_API int windowEventsHandler(lua_State* l);
 LUALIB_API int destroyWindow(lua_State* l);
 LUALIB_API int loadImage(lua_State* l);
-LUALIB_API int generateTexture(lua_State* l);
+LUALIB_API int texture_generateTexture(lua_State* l);
 LUALIB_API int clearScene(lua_State* l);
 LUALIB_API int texture_draw(lua_State* l);
 

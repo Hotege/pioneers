@@ -120,7 +120,7 @@ LUALIB_API int loadImage(lua_State* l)
     }
     lua_settable(l, -3);
     lua_pushstring(l, "generateTexture");
-    lua_pushcfunction(l, generateTexture);
+    lua_pushcfunction(l, texture_generateTexture);
     lua_settable(l, -3);
     free(img.data);
     img.data = NULL;
@@ -130,7 +130,7 @@ LUALIB_API int loadImage(lua_State* l)
     return 1;
 }
 
-LUALIB_API int generateTexture(lua_State* l)
+LUALIB_API int texture_generateTexture(lua_State* l)
 {
     lua_pushstring(l, "width");
     lua_gettable(l, -2);
