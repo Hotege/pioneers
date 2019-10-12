@@ -173,8 +173,8 @@ LUALIB_API int texture_generateTexture(lua_State* l)
     lua_pushstring(l, "id");
     lua_pushinteger(l, texture);
     lua_settable(l, -3);
-    lua_pushstring(l, "draw");
-    lua_pushcfunction(l, texture_draw);
+    lua_pushstring(l, "display");
+    lua_pushcfunction(l, texture_display);
     lua_settable(l, -3);
     return 1;
 }
@@ -192,7 +192,7 @@ LUALIB_API int clearScene(lua_State* l)
     return 0;
 }
 
-LUALIB_API int texture_draw(lua_State* l)
+LUALIB_API int texture_display(lua_State* l)
 {
     const float x = lua_tointeger(l, -4);
     const float y = lua_tointeger(l, -3);
