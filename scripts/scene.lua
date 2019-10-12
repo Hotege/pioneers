@@ -4,7 +4,7 @@ scene.width = 800
 scene.height = 600
 scene.object = nil
 
-function scene.verify()
+function scene:verify()
     typeSceneObject = type(scene.object)
     if (typeSceneObject == "table") then
         typeRender = type(scene.object.render)
