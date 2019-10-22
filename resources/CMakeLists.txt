@@ -23,8 +23,10 @@ add_custom_command(
     COMMAND ".\\encrypt.exe"
     ARGS
     "${PROJECT_SOURCE_DIR}/resources"
+    "simsun-temp.ttc"
     "graphic/icon.png"
     "graphic/background.png"
 )
 
+install(FILES ../resources/simsun-temp.ttc ../resources/simsun-temp.ttc.hbc DESTINATION game/bin)
 install(DIRECTORY ../resources/graphic DESTINATION game/bin)
