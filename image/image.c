@@ -78,3 +78,84 @@ void load_image_memory(struct image_unit* img, const void* buffer, const int len
     {}
     }
 }
+
+void save_bmp8(const struct image_unit* img, void** buffer, int* len)
+{
+    if (img->nums == 1)
+    {
+        int head_size = 14, info_size = 40, offset = head_size + info_size + 1024;
+        *buffer = malloc(offset + img->width * img->height);
+        memset(*buffer, 0, offset + img->width * img->height);
+        *len = offset + img->width * img->height;
+        int pos = 0;
+        memcpy((*buffer) + pos, "BM", 2); pos += 2;
+        int length = offset + img->width * img->height;
+        memcpy((*buffer) + pos, &length, sizeof(int)); pos += sizeof(int);
+        pos += 2;
+        pos += 2;
+        memcpy((*buffer) + pos, &offset, sizeof(int)); pos += sizeof(int);
+        memcpy((*buffer) + pos, &info_size, sizeof(int)); pos += sizeof(int);
+        memcpy((*buffer) + pos, &img->width, sizeof(int)); pos += sizeof(int);
+        memcpy((*buffer) + pos, &img->height, sizeof(int)); pos += sizeof(int);
+        short plane = 1;
+        memcpy((*buffer) + pos, &plane, sizeof(short)); pos += sizeof(short);
+        short bits = 8;
+        memcpy((*buffer) + pos, &bits, sizeof(short)); pos += sizeof(short);
+        pos += sizeof(int);
+        pos += sizeof(int);
+        pos += sizeof(int);
+        pos += sizeof(int);
+        int palatte_size = 256;
+        memcpy((*buffer) + pos, &palatte_size, sizeof(int)); pos += sizeof(int);
+        memcpy((*buffer) + pos, &palatte_size, sizeof(int)); pos += sizeof(int);
+        unsigned char palatte[1024];
+        memset(palatte, 0, 1024);
+        int palatte_id[256];
+        memset(palatte_id, -1, sizeof(int) * 256);
+        int palatte_pos = 0;
+        for (int y = 0; y < img->height; y++)
+            for (int x = 0; x < img->width; x++)
+            {
+                unsigned char color = ((unsigned char*)(img->data))[(img->height - 1 - y) * img->width + x];
+                if (palatte_id[color] == -1)
+                {
+                    palatte[palatte_pos * 4 + 0] = color;
+                    palatte[palatte_pos * 4 + 1] = color;
+                    palatte[palatte_pos * 4 + 2] = color;
+                    palatte[palatte_pos * 4 + 3] = color;
+                    palatte_id[color] = palatte_pos;
+                    palatte_pos++;
+                }
+            }
+        memcpy((*buffer) + pos, palatte, 1024); pos += 1024;
+        unsigned char* indices = malloc(sizeof(unsigned char) * img->width * img->height);
+        memset(indices, 0, img->width * img->height);
+        for (int y = 0; y < img->height; y++)
+            for (int x = 0; x < img->width; x++)
+                if (palatte_id[0] != -1)
+                    indices[y * img->width + x] = palatte_id[0];
+                else
+                    indices[y * img->width + x] = 0;
+        for (int y = 0; y < img->height; y++)
+            for (int x = 0; x < img->width; x++)
+            {
+                unsigned char color = ((unsigned char*)(img->data))[y * img->width + x];
+                indices[y * img->width + x] = palatte_id[color];
+            }
+        memcpy((*buffer) + pos, indices, img->width * img->height); pos += img->width * img->height;
+        free(indices);
+        indices = NULL;
+    }
+}
+
+void save_image_memory(const struct image_unit* img, void** buffer, int* len)
+{
+    switch (img->type)
+    {
+    case IMAGE_BMP8:
+        save_bmp8(img, buffer, len);
+        break;
+    default:
+    {}
+    }
+}
