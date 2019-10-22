@@ -1,4 +1,6 @@
 function main()
+    -- load font
+    fontInitialize(data.font, data.encrypted)
     -- create window
     icon = loadImage(data.icon, data.encrypted)
     createWindow(icon)
@@ -15,4 +17,5 @@ function main()
         windowEventsHandler()
     end
     scene.object:release()
+    fontTerminate()
 end

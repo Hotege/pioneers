@@ -2,6 +2,7 @@ data = {
 
     encrypted = true,
 
+    font = "simsun-temp.ttc",
     icon = "graphic/icon.png",
 
     button = {
