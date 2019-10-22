@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "../file/file.h"
 #include "core/core.h"
 #include "lua/base.h"
@@ -8,6 +9,8 @@
 
 int main(int argc, char const *argv[])
 {
+    // set locale
+    setlocale(LC_ALL, "");
     // load file
     struct file_loader file;
     load_file(&file, "scripts.lzp");

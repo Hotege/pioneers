@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 #include "global.h"
 #include "../core/core.h"
+#include "../font/font.h"
 #include "../../file/file.h"
 #include "../../crypt/crypt.h"
 #include "../../image/image.h"
@@ -13,6 +15,20 @@ LUALIB_API int message(lua_State* l)
 {
     const char* msg = luaL_checkstring(l, -1);
     MessageBox(get_hwnd(), msg, __get_lua_string(l, "scene", "title"), 0);
+    return 0;
+}
+
+LUALIB_API int fontInitialize(lua_State* l)
+{
+    const char* filename = luaL_checkstring(l, -2);
+    const int encrypted = lua_toboolean(l, -1);
+    font_initialize(filename, encrypted);
+    return 0;
+}
+
+LUALIB_API int fontTerminate(lua_State* l)
+{
+    font_terminate();
     return 0;
 }
 
@@ -219,4 +235,68 @@ LUALIB_API int texture_display(lua_State* l)
     glVertex2f(cx, y);
     glEnd();
     return 0;
+}
+
+void char2wchar(const char* src, wchar_t* dst)
+{
+    setlocale(LC_ALL, "");
+    mbstowcs(dst, src, strlen(src) + 1);
+}
+
+LUALIB_API int generateTextTexture(lua_State* l)
+{
+    lua_pushstring(l, "r");
+    lua_gettable(l, -2);
+    float font_r = lua_tonumber(l, -1);
+    lua_pop(l, 1);
+    lua_pushstring(l, "g");
+    lua_gettable(l, -2);
+    float font_g = lua_tonumber(l, -1);
+    lua_pop(l, 1);
+    lua_pushstring(l, "b");
+    lua_gettable(l, -2);
+    float font_b = lua_tonumber(l, -1);
+    lua_pop(l, 1);
+    lua_pushstring(l, "a");
+    lua_gettable(l, -2);
+    float font_a = lua_tonumber(l, -1);
+    lua_pop(l, 1);
+    lua_pop(l, 1);
+    lua_pushstring(l, "r");
+    lua_gettable(l, -2);
+    float back_r = lua_tonumber(l, -1);
+    lua_pop(l, 1);
+    lua_pushstring(l, "g");
+    lua_gettable(l, -2);
+    float back_g = lua_tonumber(l, -1);
+    lua_pop(l, 1);
+    lua_pushstring(l, "b");
+    lua_gettable(l, -2);
+    float back_b = lua_tonumber(l, -1);
+    lua_pop(l, 1);
+    lua_pushstring(l, "a");
+    lua_gettable(l, -2);
+    float back_a = lua_tonumber(l, -1);
+    lua_pop(l, 1);
+    lua_pop(l, 1);
+    const char* text = luaL_checkstring(l, -2);
+    const int size = lua_tointeger(l, -1);
+    int ws = mbstowcs(NULL, text, 0) + 1;
+    wchar_t* wtext = malloc(sizeof(wchar_t) * ws);
+    char2wchar(text, wtext);
+    unsigned char* buffer = NULL;
+    int render_width = 0, render_height = 0;
+    font_render(&buffer, &render_width, &render_height, wtext, size);
+    free(buffer);
+    buffer = NULL;
+    free(wtext);
+    wtext = NULL;
+    lua_newtable(l);
+    lua_pushstring(l, "id");
+    lua_pushinteger(l, 0);
+    lua_settable(l, -3);
+    lua_pushstring(l, "display");
+    lua_pushcfunction(l, texture_display);
+    lua_settable(l, -3);
+    return 1;
 }

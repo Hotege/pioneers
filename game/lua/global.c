@@ -12,6 +12,10 @@ void load_globals(lua_State* l)
     // functions
     lua_pushcfunction(l, message);
     lua_setglobal(l, "message");
+    lua_pushcfunction(l, fontInitialize);
+    lua_setglobal(l, "fontInitialize");
+    lua_pushcfunction(l, fontTerminate);
+    lua_setglobal(l, "fontTerminate");
     lua_pushcfunction(l, createWindow);
     lua_setglobal(l, "createWindow");
     lua_pushcfunction(l, windowShouldClose);
@@ -24,6 +28,8 @@ void load_globals(lua_State* l)
     lua_setglobal(l, "loadImage");
     lua_pushcfunction(l, clearScene);
     lua_setglobal(l, "clearScene");
+    lua_pushcfunction(l, generateTextTexture);
+    lua_setglobal(l, "generateTextTexture");
 }
 
 GetLuaMember(const char*, string, fields, name)

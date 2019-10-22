@@ -8,6 +8,7 @@ file(
     GLOB srcs
     main.c
     core/core.c
+    font/font.c
     lua/base.c
     lua/global.c
     lua/functions.c
@@ -28,6 +29,7 @@ link_libraries(
     glfw3
     glew32
     opengl32
+    freetype
 )
 
 add_executable(game ${srcs})
