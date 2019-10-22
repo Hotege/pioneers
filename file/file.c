@@ -25,6 +25,13 @@ void save_file(struct file_loader* fl, const char* path)
     fclose(file);
 }
 
+void save_wfile(struct file_loader* fl, const wchar_t* path)
+{
+    FILE* file = _wfopen(path, L"wb");
+    fwrite(fl->data, fl->size, 1, file);
+    fclose(file);
+}
+
 void close_file(struct file_loader* fl)
 {
     if (fl != NULL)
