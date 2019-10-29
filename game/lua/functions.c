@@ -251,6 +251,11 @@ LUALIB_API int texture_display(lua_State* l)
     const float y = lua_tonumber(l, -3);
     const float cx = lua_tonumber(l, -2);
     const float cy = lua_tonumber(l, -1);
+    lua_pop(l, 4);
+    lua_pushstring(l, "id");
+    lua_gettable(l, -2);
+    GLuint texture = lua_tointeger(l, -1);
+    lua_pop(l, 1);
 
     static float display2d_position[12];
     display2d_position[0] = x;
@@ -280,7 +285,7 @@ LUALIB_API int texture_display(lua_State* l)
     glEnableVertexAttribArray(texcoord_location);
     glVertexAttribPointer(texcoord_location, 2, GL_FLOAT, GL_FALSE, 0, display2d_texcoord);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, lua_tointeger(l, -1));
+    glBindTexture(GL_TEXTURE_2D, texture);
     glUniform1i(glGetUniformLocation(shader->program, "textureInput"), 0);
     glDrawElements(GL_TRIANGLES, sizeof(display2d_indices) / sizeof(unsigned int), GL_UNSIGNED_INT, display2d_indices);
     return 0;
@@ -336,13 +341,23 @@ LUALIB_API int generateTextTexture(lua_State* l)
     unsigned char* buffer = NULL;
     int render_width = 0, render_height = 0;
     font_render(&buffer, &render_width, &render_height, wtext, size);
+    GLuint texture = 0;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, render_width, render_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, render_width, render_height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, buffer);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
     free(buffer);
     buffer = NULL;
     free(wtext);
     wtext = NULL;
     lua_newtable(l);
     lua_pushstring(l, "id");
-    lua_pushinteger(l, 0);
+    lua_pushinteger(l, texture);
     lua_settable(l, -3);
     lua_pushstring(l, "display");
     lua_pushcfunction(l, texture_display);
