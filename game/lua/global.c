@@ -12,6 +12,10 @@ void load_globals(lua_State* l)
     // functions
     lua_pushcfunction(l, message);
     lua_setglobal(l, "message");
+    lua_pushcfunction(l, shadersInitialize);
+    lua_setglobal(l, "shadersInitialize");
+    lua_pushcfunction(l, shadersTerminate);
+    lua_setglobal(l, "shadersTerminate");
     lua_pushcfunction(l, fontInitialize);
     lua_setglobal(l, "fontInitialize");
     lua_pushcfunction(l, fontTerminate);

@@ -8,6 +8,7 @@ file(
     GLOB srcs
     main.c
     core/core.c
+    core/shader.c
     font/font.c
     lua/base.c
     lua/global.c
@@ -21,6 +22,7 @@ link_directories(
 )
 
 link_libraries(
+    hash
     file
     crypt
     image

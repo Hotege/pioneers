@@ -4,6 +4,9 @@ function main()
     -- create window
     icon = loadImage(data.icon, data.encrypted)
     createWindow(icon)
+    -- load shaders
+    shadersInitialize(shaders)
+    -- prepare scene
     scene.object = scene_title:new(nil)
     -- main loop
     while (not windowShouldClose()) do
@@ -18,4 +21,5 @@ function main()
     end
     scene.object:release()
     fontTerminate()
+    shadersTerminate()
 end

@@ -6,6 +6,8 @@
 #include <lualib.h>
 
 LUALIB_API int message(lua_State* l);
+LUALIB_API int shadersInitialize(lua_State* l);
+LUALIB_API int shadersTerminate(lua_State* l);
 LUALIB_API int fontInitialize(lua_State* l);
 LUALIB_API int fontTerminate(lua_State* l);
 LUALIB_API int createWindow(lua_State* l);
