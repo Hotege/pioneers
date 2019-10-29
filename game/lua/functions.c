@@ -265,26 +265,11 @@ LUALIB_API int texture_display(lua_State* l)
     display2d_position[9] = cy;
     display2d_position[10] = cx;
     display2d_position[11] = y;
-    static float display2d_texcoord[12];
-    display2d_texcoord[0] = 0.0f;
-    display2d_texcoord[1] = 0.0f;
-    display2d_texcoord[2] = 1.0f;
-    display2d_texcoord[3] = 0.0f;
-    display2d_texcoord[4] = 0.0f;
-    display2d_texcoord[5] = 1.0f;
-    display2d_texcoord[6] = 1.0f;
-    display2d_texcoord[7] = 1.0f;
-    display2d_texcoord[8] = 0.0f;
-    display2d_texcoord[9] = 1.0f;
-    display2d_texcoord[10] = 1.0f;
-    display2d_texcoord[11] = 0.0f;
-    static unsigned int display2d_indices[6];
-    display2d_indices[0] = 0;
-    display2d_indices[1] = 1;
-    display2d_indices[2] = 2;
-    display2d_indices[3] = 3;
-    display2d_indices[4] = 4;
-    display2d_indices[5] = 5;
+    static float display2d_texcoord[] = {
+        0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+    };
+    static unsigned int display2d_indices[] = { 0, 1, 2, 3, 4, 5, };
 
     struct shader_field* shader = shader_fetch("display2D");
     glUseProgram(shader->program);
