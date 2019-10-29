@@ -19,6 +19,7 @@ link_directories(
     ${FREETYPE_LINK_DIR}
 )
 
+add_subdirectory(hash)
 add_subdirectory(file)
 add_subdirectory(crypt)
 add_subdirectory(resources)
