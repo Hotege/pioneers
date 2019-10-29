@@ -90,6 +90,8 @@ void font_render(unsigned char** dest, int* width, int* height, const wchar_t* w
     }
     free(chararacters);
     chararacters = NULL;
+    *width = total_width;
+    *height = font_size;
 }
 
 void font_terminate()
