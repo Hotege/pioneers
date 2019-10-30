@@ -20,6 +20,6 @@ function main()
         windowEventsHandler()
     end
     scene.object:release()
-    fontTerminate()
     shadersTerminate()
+    fontTerminate()
 end
