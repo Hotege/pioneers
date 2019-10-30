@@ -344,7 +344,6 @@ LUALIB_API int generateTextTexture(lua_State* l)
     GLuint texture = 0;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, render_width, render_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, render_width, render_height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, buffer);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
